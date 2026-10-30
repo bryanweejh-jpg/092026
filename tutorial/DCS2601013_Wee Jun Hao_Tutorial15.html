@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tutorial15</title>
+<link rel=icon href=picture.png type=image/png>
+<meta name=viewport content=width=device-width,initial-scale=1.0>
+<style>
+
+body{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+
+table.t1{
+background-color:powderblue;
+color:#696969; font-family:Times New Romans;
+font-size:120%;
+text-align:left;
+width:60vw; height:100%;
+margin:0;
+border-spacing:3px;
+
+}
+
+td.details{
+background-color:#687886;
+color:white;
+padding:17px;
+width:50%;
+}
+
+caption.title{
+column-span:all;
+text-align:center;
+font-weight:bold;
+background-color:white;
+padding-bottom:15px;
+color:black;
+font-size:150%;
+}
+
+td.input{
+text-align:left;
+padding-left:10px;
+color:black;
+}
+
+td.submit{
+background-color:white;
+padding:10px;
+}
+
+
+
+</style>
+</head>
+
+<body topmargin=50>
+
+<form>
+<center>
+<table class=t1>
+<tr>
+<caption class=title>Personal details:</caption></tr>
+<tr>
+<td class=details>First Name:</td>
+<td class=input><input type=text name=fname></td>
+</tr><br>
+<tr>
+<td class=details>Last Name:</td>
+<td class=input><input type=text name=lname></td>
+</tr>
+
+<tr>
+<td class=details>Gender:</td>
+<td class=input>
+<input type=radio name=gender value=Male>Male
+<input type=radio name=gender value=Female>Female</td>
+</tr>
+
+<tr>
+<td class=details>Choose your favorite subjects:</td>
+<td class=input>
+<input type=checkbox name=fav_sub value=DCS4103>DCS4103
+
+<input type=checkbox name=fav_sub value=DCS3003>DCS3003
+
+<input type=checkbox name=fav_sub value=DCS1003>DCS1003
+
+<input type=checkbox name=fav_sub value=MST2003>MST2003</td>
+
+</tr>
+
+<tr>
+<td class=details>Address:</td>
+<td class=input>
+<textarea rows=4 cols=30 name=address></textarea></td>
+</tr>
+
+<tr>
+<td class=details>Date of Birth:</td>
+<td class=input >
+<input type=date name=dob></td>
+</tr>
+
+<tr>
+<td class=details>Login password:</td>
+<td class=input>
+<input type=password name=loginpass></td>
+</tr>
+
+<tr>
+<td class=details>Course:</td>
+<td class=input>
+<select>
+<option value=0>-List of Courses-</option>
+<optgroup label="Diploma in Computer Science">
+<option value="DCS_S1">Semester 1</option>
+<option value="DCS_S2">Semester 2</option>
+<option value="DCS_S3">Semester 3</option>
+<option value="DCS_S4">Semester 4</option>
+<option value="DCS_S5">Semester 5</option>
+<option value="DCS_S6">Semester 6</option>
+</optgroup>
+<option value=DIB>Diploma in Business</option>
+<option value=DAS>Diploma in Airline Services</option>
+</select>
+</tr>
+</table>
+
+
+
+<table>
+<tr>
+<td class=submit>
+<input type=submit value=Submit>
+<input type=reset value=Reset>
+</td></tr></table>
+
+</center>
+</form>
+
+</body>
+</html>

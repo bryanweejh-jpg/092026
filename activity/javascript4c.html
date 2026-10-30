@@ -1,0 +1,17 @@
+<html><head>
+<title>JavaScript - getElementById</title>
+<script>
+       function changeColor(newColor) {
+       const tochange = document.getElementById("textcolor");
+       tochange.style.color = newColor; 
+       }
+</script>
+</head>
+<body>
+
+<p id="textcolor">Change HTML P element text color</p>
+
+<button onclick="changeColor('blue');">blue</button>
+<button onclick="changeColor('red');">red</button>
+
+</body></html>

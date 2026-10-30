@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html><head>
+<title>JavaScript - Display text</title>
+<link rel=icon href="picture.png" type=image/png>
+<meta name=viewport content=width=device-width, initial-scale=1.0>
+</head>
+<body>
+<h1> This is an example of using JavaScript - Confirm(). </h1><br>
+
+Username:
+<input type=text name=username id=username>
+<br><br>
+
+<script>
+// to allow user to choose OK or CANCEL
+const response = confirm("1. New Rules 1 Implementation.\n2. New Rules 2 Implementation.\n\n  Read Carefully and click OK to confirm.");
+
+console.log(response); 
+
+if (response) {
+  document.write("\nOK was pressed");
+} else {
+  document.write("\nCANCEL was pressed");
+  document.getElementById("username").disabled = true;
+}
+</script>
+<br><br></body></html>
+
+
+
+
+
+
+
+
+
+
+
+

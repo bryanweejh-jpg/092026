@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html><head>
+<title>JavaScript</title>
+<link rel=icon href=picture.png type=image/png>
+<meta name=viewport content=width=device-width, initial-scale=1.0>
+</head>
+<body>
+<h3> This is an example of using JavaScript - Event onclick attribute in HTML. </h3>
+
+<p id = "paraEffect" style="border-style: double; color:red; width:fit-content;">
+Click here to see the effect.
+</p>
+
+<script>
+  document.getElementById("paraEffect").onclick = function() {
+  changeEffect()    
+  };
+
+  function changeEffect()    {
+    document.getElementById("paraEffect").innerHTML = "Welcome to my website!";
+    document.getElementById("paraEffect").style.color = "#C71585";
+    document.getElementById("paraEffect").style.backgroundColor = "#B0E0E6";
+    document.getElementById("paraEffect").style.fontSize = "25px";
+    document.getElementById("paraEffect").style.border = "4px groove red"; 
+    document.getElementById("paraEffect").style.fontWeight = "bold"; 
+    document.getElementById("paraEffect").style.textDecoration = "underline";
+  };
+</script>
+</body></html>
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head><title>JavaScript</title>
+<link rel=icon href=sunflower.jpg type=image/jpg>
+<meta name=viewport content=width=device-width, initial-scale=1.0>
+</head>
+<body>
+<h1>Event - Onblur and Onfocus</h1>
+<p style="color:blue;font-size:30;border-style:double;width:fit-content;">
+Click in the text field, a function was called to set the background color to blue.
+</p>
+<p style="color:yellow;font-size:30;border-style:ridge;width:fit-content;">
+Click out of the text field, a function was called to set  the background color to yellow.
+</p>
+Enter your name: 
+<input type=text id=fname onfocus=CallFocus() onblur=CallBlur()>
+
+<script>
+function CallFocus() {
+  document.getElementById("fname").style.background = "blue";
+}
+
+function CallBlur() {
+  document.getElementById("fname").style.background = "yellow";
+}
+</script>
+</body></html>
+
+
+
+
+
+

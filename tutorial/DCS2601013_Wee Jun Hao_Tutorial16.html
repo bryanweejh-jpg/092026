@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tutorial Lesson 16</title>
+<link rel="icon" href="picture.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body {
+    margin-top: 8px;
+    font-family: Arial;
+}
+
+table.main {
+    width: 690px;
+    border: 2px solid grey;
+    padding: 10px;
+    margin: auto;
+}
+
+caption.title {
+    font-weight: bold;
+    font-size: 140%;
+    padding: 10px;
+}
+
+table.personal {
+    border: 2px solid black;
+    width: 90%;
+    padding: 10px;
+    margin: auto;
+}
+
+table.questions {
+    border: 2px solid black;
+    width: 90%;
+    padding: 10px;
+    margin: auto;
+}
+
+td.question {
+    color: blue;
+    text-align: left;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+td.answerAll {
+    color: red;
+    text-align: left;
+    font-weight: bold;
+}
+
+td {
+    font-size: 13px;
+    padding: 2px;
+}
+
+table.personal input[type=text] {
+    width: 140px;
+}
+
+table.personal select {
+    width: 145px;
+}
+
+table.personal input[type=date] {
+    width: 110px;
+}
+
+
+table.questions tr {
+    height: auto;
+}
+
+table.questions textarea {
+    width: 98%;
+    height: 43px;
+    resize: none;
+}
+
+font.asterisk {
+    color: red;
+}
+
+.buttons {
+    text-align: center;
+    padding: 25px;
+}
+
+.buttons input {
+    margin-left: 25px;
+    margin-right: 25px;
+    font-size: 16px;
+}
+
+th.detail{
+color:blue; 
+text-align:left;
+padding-bottom:10px;
+}
+
+tr.group td{
+padding-top:22px;
+}
+
+td.radio, td.checkbox{
+padding-top:0px;
+padding-bottom:0px;
+}
+
+</style>
+
+
+<script>
+function validateForm(){
+
+let id = document.form.id.value;
+if(id==""){
+alert("Please fill in Student ID");
+return false;
+}
+
+let name = document.form.name.value;
+if(name==""){
+alert("Please fill in Student Name");
+return false;
+}
+
+let email = document.form.email.value;
+if(!email.includes("@")){
+alert("Please fill in valid email");
+return false;
+}
+
+let ic = document.form.ic.value;
+if(ic==""){
+alert("Please fill in Student IC");
+return false;
+}
+
+let course = document.form.course.value;
+if(course==""){
+alert("Please select a course");
+return false;
+}
+
+let dob = document.form.dob.value;
+if(dob==""){
+alert("Please fill in date");
+return false;
+}
+
+let question1 = document.form.question1.value;
+if(question1==""){
+alert("Please answer question 1");
+return false;
+}
+
+let question2 = document.form.question2.value;
+if(question2==""){
+alert("Please answer question 2");
+return false;
+}
+
+let anyChecked = document.querySelector('input[name="learned"]:checked');
+  if (!anyChecked) {
+    alert("Please answer question 3");
+    return false;
+}
+
+let suggestions = document.form.suggestions.value;
+if(suggestions==""){
+alert("Please fill in suggestions");
+return false;
+}
+}
+
+</script>
+
+
+</head>
+
+<body>
+
+<form name=form onsubmit=" return validateForm()">
+
+<table class="main">
+
+<caption class="title">
+DCS3003 Website Design Course Survey
+</caption>
+
+<tr>
+<td>
+
+<table class="personal">
+
+<tr>
+<th colspan=8 class=detail>
+<u>Personal detail</u>
+</th>
+</tr>
+
+<tr>
+<td colspan="2">Student ID</td>
+<td>:</td>
+<td><input type="text" name="id"></td>
+
+<td colspan="2">Student Name</td>
+<td>:</td>
+<td><input type="text" name="name"></td>
+</tr>
+
+<tr>
+<td colspan="2">Email address</td>
+<td>:</td>
+<td><input type="text" name="email"></td>
+
+<td colspan="2">IC No.</td>
+<td>:</td>
+<td><input type="text" name="ic"></td>
+</tr>
+
+<tr>
+<td colspan="2">Course</td>
+<td>:</td>
+<td>
+<select name="course">
+<option value="">- List of Courses -</option>
+<option value="DCS">Diploma in Computer Science</option>
+<option value="DIB">Diploma in Business</option>
+<option value="DAS">Diploma in Airline Services</option>
+</select>
+</td>
+
+<td colspan="2">D.O.B</td>
+<td>:</td>
+<td><input type="date" name="dob"></td>
+</tr>
+
+</table>
+
+<br>
+
+<table class="questions">
+
+<tr>
+<td class="question">Questions</td>
+</tr>
+<tr>
+<td class="answerAll">Please answer all questions</td>
+</tr>
+
+<tr class=group>
+<td rowspan=2>
+1) Have you grasped the content of the Website Design so far?
+</td>
+<td class=radio>
+<input type="radio" name="question1" value="yes"> YES
+</td>
+</tr>
+
+<tr>
+<td class=radio>
+<input type="radio" name="question1" value="no"> NO
+</td>
+</tr>
+
+<tr class=group>
+<td rowspan="2">
+2) Can you now create a simple but interactive website?
+</td>
+<td class=radio>
+<input type="radio" name="question2" value="yes"> YES
+</td>
+</tr>
+
+<tr>
+<td class=radio>
+<input type="radio" name="question2" value="no"> NO
+</td>
+</tr>
+
+<tr class=group>
+<td rowspan="4">
+3) What have you learned so far?
+</td>
+<td class=checkbox>
+<input type="checkbox" name="learned" value="knowledge"> Knowledge
+</td>
+</tr>
+
+<tr>
+<td class=checkbox>
+<input type="checkbox" name="learned" value="skill"> Practical Skills
+</td>
+</tr>
+
+<tr>
+<td class=checkbox>
+<input type="checkbox" name="learned" value="solve"> Problem Solving
+</td>
+</tr>
+
+<tr>
+<td class=checkbox>
+<input type="checkbox" name="learned" value="self_exploration"> Self-Exploration Skills
+</td>
+</tr>
+
+<tr class=group>
+<td colspan="2">
+4) Wish items / suggestions <font class="asterisk">*</font>
+</td>
+</tr>
+
+<tr>
+<td colspan="2">
+<textarea name="suggestions"></textarea>
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+
+<tr>
+<td class="buttons">
+<input type="reset" value="Reset">
+<input type="submit" value="submit">
+</td>
+</tr>
+
+</table>
+
+</form>
+
+</body>
+</html>

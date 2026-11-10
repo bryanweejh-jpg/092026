@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in | Cast &amp; Reel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <div class="stage">
+
+      <!-- Top left: fishing rod -->
+      <aside class="panel panel--rod">
+        <img src="images/rod.svg" alt="Fishing rod with reel and bobber">
+      </aside>
+
+      <!-- Top centre: title of website -->
+      <header class="title">
+        <h1><a href="main.html">Cast &amp; Reel</a></h1>
+        <p>Rods and lures</p>
+      </header>
+
+      <!-- Top right: fishing boat -->
+      <aside class="panel panel--boat">
+        <img src="images/boat.svg" alt="Fishing boat with two rods">
+      </aside>
+
+      <!-- Centre: login card on the sea, with Create account below -->
+      <main class="zone">
+        <section class="card">
+          <h2>Sign in</h2>
+
+          <div id="banner" class="banner" role="alert"></div>
+
+          <form id="loginForm" novalidate>
+            <div class="field">
+              <label for="username">Username or email</label>
+              <input type="text" id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false">
+              <p class="err" id="usernameErr"></p>
+            </div>
+
+            <div class="field">
+              <label for="password">Password</label>
+              <div class="input-wrap">
+                <input type="password" id="password" name="password" autocomplete="current-password">
+                <button type="button" class="toggle" id="toggle" aria-label="Show password" aria-pressed="false">Show</button>
+              </div>
+              <p class="err" id="passwordErr"></p>
+            </div>
+
+            <div class="row">
+              <label class="check"><input type="checkbox" id="remember"> Remember my username</label>
+              <a href="forgot-password.html">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="primary" id="submitBtn">Sign in</button>
+          </form>
+        </section>
+
+        <a class="create" href="register.html">Create account</a>
+      </main>
+
+    </div>
+  </div>
+
+<script src="auth.js"></script>
+<script>
+  const form = document.getElementById('loginForm');
+  const userEl = document.getElementById('username');
+  const passEl = document.getElementById('password');
+  const rememberEl = document.getElementById('remember');
+  const btn = document.getElementById('submitBtn');
+  const banner = document.getElementById('banner');
+  const toggle = document.getElementById('toggle');
+
+  // Restore remembered username
+  try {
+    const saved = localStorage.getItem('tt_username');
+    if (saved) { userEl.value = saved; rememberEl.checked = true; }
+  } catch (e) {}
+
+  // Show / hide password
+  toggle.addEventListener('click', () => {
+    const show = passEl.type === 'password';
+    passEl.type = show ? 'text' : 'password';
+    toggle.textContent = show ? 'Hide' : 'Show';
+    toggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    toggle.setAttribute('aria-pressed', String(show));
+  });
+
+  function setError(input, errId, msg) {
+    document.getElementById(errId).textContent = msg;
+    input.classList.toggle('invalid', !!msg);
+    input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+  }
+  function showBanner(type, msg) {
+    banner.className = 'banner show ' + type;
+    banner.textContent = msg;
+  }
+
+  function validate() {
+    const u = userEl.value.trim();
+    const p = passEl.value;
+    let ok = true;
+    setError(userEl, 'usernameErr', '');
+    setError(passEl, 'passwordErr', '');
+    if (!u) { setError(userEl, 'usernameErr', 'Enter your username or email.'); ok = false; }
+    else if (u.includes('@') && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(u)) {
+      setError(userEl, 'usernameErr', 'That email address doesn\u2019t look right.'); ok = false;
+    }
+    if (!p) { setError(passEl, 'passwordErr', 'Enter your password.'); ok = false; }
+    else if (p.length < 8) { setError(passEl, 'passwordErr', 'Passwords are at least 8 characters.'); ok = false; }
+    if (!ok) (userEl.classList.contains('invalid') ? userEl : passEl).focus();
+    return ok;
+  }
+
+  /* ---------------------------------------------------------------
+     DEMO AUTH: replace this function with a real request to your
+     server, e.g.
+       const res = await fetch('/api/login', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ username, password })
+       });
+       if (!res.ok) throw new Error('Invalid credentials');
+     Never check passwords in browser code on a live site.
+     Demo login: angler / tightlines1
+  --------------------------------------------------------------- */
+  async function authenticate(username, password) {
+    await new Promise(r => setTimeout(r, 400));
+    return TT.login(username, password);   // see auth.js
+  }
+
+  // Message shown after creating an account
+  if (new URLSearchParams(window.location.search).get('created')) {
+    showBanner('success', 'Account created. Sign in with your new details.');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    banner.className = 'banner';
+    if (!validate()) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in\u2026';
+    try {
+      const user = await authenticate(userEl.value.trim(), passEl.value);
+      try {
+        if (rememberEl.checked) localStorage.setItem('tt_username', userEl.value.trim());
+        else localStorage.removeItem('tt_username');
+      } catch (e) {}
+      
+      alert("Success, Signed in. Welcome back "+user.name);
+      try { localStorage.setItem('cr_user', JSON.stringify(user.name)); } catch (e) {}
+    } catch (err) {
+      showBanner('error', 'Username or password is incorrect. Check both and try again.');
+      passEl.value = '';
+      passEl.focus();
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Sign in';
+    }
+  });
+</script>
+</body>
+</html>

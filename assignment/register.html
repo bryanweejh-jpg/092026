@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create account | Cast &amp; Reel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <div class="stage">
+
+      <aside class="panel panel--rod">
+        <img src="images/rod.svg" alt="Fishing rod with reel and bobber">
+      </aside>
+
+      <header class="title">
+        <h1><a href="main.html">Cast &amp; Reel</a></h1>
+        <p>Rods and lures</p>
+      </header>
+
+      <aside class="panel panel--boat">
+        <img src="images/boat.svg" alt="Fishing boat with two rods">
+      </aside>
+
+      <main class="zone">
+        <section class="card">
+          <h2>Create your account</h2>
+
+          <div id="banner" class="banner" role="alert"></div>
+
+          <form id="registerForm" novalidate>
+            <div class="field">
+              <label for="username">Username</label>
+              <input type="text" id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false">
+              <p class="hint">3&ndash;20 letters, numbers or underscores.</p>
+              <p class="err" id="usernameErr"></p>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="text" id="email" name="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false">
+              <p class="err" id="emailErr"></p>
+            </div>
+
+            <div class="field">
+              <label for="password">Password</label>
+              <div class="input-wrap">
+                <input type="password" id="password" name="password" autocomplete="new-password">
+                <button type="button" class="toggle" id="toggle" aria-label="Show password" aria-pressed="false">Show</button>
+              </div>
+              <p class="hint">At least 8 characters.</p>
+              <p class="err" id="passwordErr"></p>
+            </div>
+
+            <div class="field">
+              <label for="confirm">Confirm password</label>
+              <input type="password" id="confirm" name="confirm" autocomplete="new-password">
+              <p class="err" id="confirmErr"></p>
+            </div>
+
+            <button type="submit" class="primary" id="submitBtn">Create account</button>
+          </form>
+        </section>
+
+        <a class="create" href="login.html">Back to sign in</a>
+      </main>
+
+    </div>
+  </div>
+
+<script src="auth.js"></script>
+<script>
+  const form = document.getElementById('registerForm');
+  const userEl = document.getElementById('username');
+  const emailEl = document.getElementById('email');
+  const passEl = document.getElementById('password');
+  const confEl = document.getElementById('confirm');
+  const btn = document.getElementById('submitBtn');
+  const banner = document.getElementById('banner');
+  const toggle = document.getElementById('toggle');
+
+  // Detect password reset mode
+  const params = new URLSearchParams(window.location.search);
+  const isReset = params.get('reset') === '1';
+  const resetEmail = params.get('email') || '';
+
+  if (isReset) {
+    document.querySelector('.card h2').textContent = 'Reset your account';
+    btn.textContent = 'Update account';
+    emailEl.value = resetEmail;
+    emailEl.readOnly = true;
+  }
+
+  // Show / hide password
+  toggle.addEventListener('click', () => {
+    const show = passEl.type === 'password';
+    passEl.type = show ? 'text' : 'password';
+    toggle.textContent = show ? 'Hide' : 'Show';
+    toggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    toggle.setAttribute('aria-pressed', String(show));
+  });
+
+  function setError(input, errId, msg) {
+    document.getElementById(errId).textContent = msg;
+    input.classList.toggle('invalid', !!msg);
+    input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+  }
+
+  function showBanner(type, msg) {
+    banner.className = 'banner show ' + type;
+    banner.textContent = msg;
+  }
+
+  function validate() {
+    const u = userEl.value.trim();
+    const e = emailEl.value.trim();
+    const p = passEl.value;
+    const c = confEl.value;
+    let first = null;
+
+    const fail = (el, id, msg) => {
+      setError(el, id, msg);
+      first = first || el;
+    };
+
+    setError(userEl, 'usernameErr', '');
+    setError(emailEl, 'emailErr', '');
+    setError(passEl, 'passwordErr', '');
+    setError(confEl, 'confirmErr', '');
+
+    if (!u) {
+      fail(userEl, 'usernameErr', 'Choose a username.');
+    } else if (!/^[A-Za-z0-9_]{3,20}$/.test(u)) {
+      fail(userEl, 'usernameErr', 'Use 3\u201320 letters, numbers or underscores.');
+    }
+
+    if (!e) {
+      fail(emailEl, 'emailErr', 'Enter your email address.');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
+      fail(emailEl, 'emailErr', 'That email address doesn\u2019t look right.');
+    }
+
+    if (!p) {
+      fail(passEl, 'passwordErr', 'Choose a password.');
+    } else if (p.length < 8) {
+      fail(passEl, 'passwordErr', 'Passwords are at least 8 characters.');
+    }
+
+    if (!c) {
+      fail(confEl, 'confirmErr', 'Enter your password again.');
+    } else if (c !== p) {
+      fail(confEl, 'confirmErr', 'The passwords don\u2019t match.');
+    }
+
+    if (first) first.focus();
+    return !first;
+  }
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    banner.className = 'banner';
+
+    if (!validate()) return;
+
+    btn.disabled = true;
+    btn.textContent = isReset
+      ? 'Updating account\u2026'
+      : 'Creating account\u2026';
+
+    try {
+      if (isReset) {
+        // Update the existing account matching the original email
+        await TT.resetAccount(
+          resetEmail,
+          userEl.value.trim(),
+          emailEl.value.trim(),
+          passEl.value
+        );
+
+        // Update the remembered username if it belongs to this account
+        try {
+          const savedUsername = localStorage.getItem('tt_username');
+
+          if (
+            savedUsername &&
+            savedUsername.toLowerCase() === resetEmail.toLowerCase()
+          ) {
+            localStorage.setItem('tt_username', userEl.value.trim());
+          }
+
+          const currentUser = JSON.parse(
+            localStorage.getItem('cr_user') || 'null'
+          );
+
+          if (
+            typeof currentUser === 'string' &&
+            currentUser.toLowerCase() === resetEmail.toLowerCase()
+          ) {
+            localStorage.setItem(
+              'cr_user',
+              JSON.stringify(userEl.value.trim())
+            );
+          }
+        } catch (e) {}
+
+        showBanner(
+          'success',
+          'Account updated successfully. Taking you to sign in\u2026'
+        );
+
+        setTimeout(() => {
+          window.location.href = 'login.html?created=1';
+        }, 1200);
+
+      } else {
+        // Normal account creation remains unchanged
+        await TT.register(
+          userEl.value.trim(),
+          emailEl.value.trim(),
+          passEl.value
+        );
+
+        showBanner(
+          'success',
+          'Account created. Taking you to sign in\u2026'
+        );
+
+        setTimeout(() => {
+          window.location.href = 'login.html?created=1';
+        }, 1200);
+      }
+
+    } catch (err) {
+      if (err.code === 'username') {
+        setError(
+          userEl,
+          'usernameErr',
+          'That username is already taken.'
+        );
+        userEl.focus();
+
+      } else if (err.code === 'email') {
+        setError(
+          emailEl,
+          'emailErr',
+          'An account with that email already exists.'
+        );
+        emailEl.focus();
+
+      } else if (err.message === 'Email not found') {
+        showBanner(
+          'error',
+          'The original account could not be found. Please try again.'
+        );
+
+      } else {
+        showBanner(
+          'error',
+          'We couldn\u2019t save your account. Check that your browser allows site storage and try again.'
+        );
+      }
+
+    } finally {
+      btn.disabled = false;
+      btn.textContent = isReset
+        ? 'Update account'
+        : 'Create account';
+    }
+  });
+</script>
+</body>
+</html>
+```
